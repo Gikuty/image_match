@@ -31,13 +31,11 @@ int main(int argc, char *argv[])
     memcpy(file2, argv[2], sizeof(char) * strlen(argv[2]));
     file2[strlen(argv[2])] = 0;
 #endif
+    // Match keypoints.
+    std::list<ezsift::MatchPair> match_list;
+    ezsift::match_keypoints(kpt_list1, kpt_list2, match_list);
 
-    // Read two input images
-    ezsift::Image<unsigned char> image1, image2;
-    if (image1.read_pgm(file1) != 0) {
-        std::cerr << "Failed to open input image1!" << std::endl;
-        return -1;
-    }
+   
 
     if (image2.read_pgm(file2) != 0) {
         printf("Failed to open input image2!\n");
@@ -48,27 +46,14 @@ int main(int argc, char *argv[])
     std::cout << "Image 2 loaded, image size: " << image2.w << " x " << image2.h
               << std::endl;
 
-    // Double the original image as the first octive.
-    ezsift::double_original_image(true);
-
-    // Detect keypoints
-    std::list<ezsift::SiftKeypoint> kpt_list1, kpt_list2;
-    std::cout << "\nSIFT detection on image 1 ..." << std::endl;
-    ezsift::sift_cpu(image1, kpt_list1, true);
-    std::cout << "# keypoints in image 1: "
-              << static_cast<unsigned int>(kpt_list1.size()) << std::endl;
-
-    std::cout << "\nSIFT detection on image 2 ..." << std::endl;
-    ezsift::sift_cpu(image2, kpt_list2, true);
-    std::cout << "# keypoints in image2: "
-              << static_cast<unsigned int>(kpt_list2.size()) << std::endl;
-
-    // Save keypoint list, and draw keypoints on images.
-  
-
-    // Match keypoints.
-    std::list<ezsift::MatchPair> match_list;
-    ezsift::match_keypoints(kpt_list1, kpt_list2, match_list);
+   
+ // Read two input images
+    ezsift::Image<unsigned char> image1, image2;
+    if (image1.read_pgm(file1) != 0) {
+        std::cerr << "Failed to open input image1!" << std::endl;
+        return -1;
+    }
+    
 
     // Draw result image.
     ezsift::draw_match_lines_to_ppm_file("sift_matching_a_b.ppm", image1,

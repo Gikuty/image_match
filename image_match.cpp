@@ -35,12 +35,7 @@ int main(int argc, char *argv[])
     std::list<ezsift::MatchPair> match_list;
     ezsift::match_keypoints(kpt_list1, kpt_list2, match_list);
 
-    // Read two input images
-    ezsift::Image<unsigned char> image1, image2;
-    if (image1.read_pgm(file1) != 0) {
-        std::cerr << "Failed to open input image1!" << std::endl;
-        return -1;
-    }
+   
 
     if (image2.read_pgm(file2) != 0) {
         printf("Failed to open input image2!\n");
@@ -52,7 +47,12 @@ int main(int argc, char *argv[])
               << std::endl;
 
    
-
+ // Read two input images
+    ezsift::Image<unsigned char> image1, image2;
+    if (image1.read_pgm(file1) != 0) {
+        std::cerr << "Failed to open input image1!" << std::endl;
+        return -1;
+    }
     
 
     // Draw result image.
